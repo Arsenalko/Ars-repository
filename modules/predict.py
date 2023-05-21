@@ -20,11 +20,11 @@ def predict():
     for filename in os.listdir(f'{path}/data/test'):
         with open(f'{path}/data/test/{filename}', 'r') as j:
             df = pd.DataFrame(json.load(j), index=[0])
-        id_list.append(df['id'])
+        id_list.append(df['id'].tolist())
         pred_list.append(model.predict(df))
 
     df_preds = pd.DataFrame({'id': id_list, 'predictions': pred_list})
-    df_preds.to_csv(f'{path}/data/predictions/preds_{d}.csv')
+    df_preds.loc[:, ['id', 'predictions']].to_csv(f'{path}/data/predictions/preds_{d}.csv', index="False")
 
 
 if __name__ == '__main__':
