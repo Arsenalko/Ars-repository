@@ -4,12 +4,15 @@ import os
 import pandas as pd
 import json
 
+from datetime import datetime
+
 
 path = os.environ.get('PROJECT_PATH', '..')
 
 
 def predict():
-    with open(f'{path}/data/models/cars_pipe_202305162129.pkl', 'rb') as file:
+    d = datetime.now().strftime("%Y%m%d%H%M")
+    with open(f'{path}/data/models/cars_pipe_{d}.pkl', 'rb') as file:
         model = dill.load(file)
 
     id_list = []
@@ -21,7 +24,7 @@ def predict():
         pred_list.append(model.predict(df))
 
     df_preds = pd.DataFrame({'id': id_list, 'predictions': pred_list})
-    df_preds.to_csv(f'{path}/data/predictions/preds.csv')
+    df_preds.to_csv(f'{path}/data/predictions/preds_{d}.csv')
 
 
 if __name__ == '__main__':
